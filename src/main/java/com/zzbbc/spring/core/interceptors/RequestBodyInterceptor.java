@@ -8,7 +8,7 @@ import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter;
-import com.zzbbc.spring.core.logs.APILoggingService;
+import com.zzbbc.spring.core.log.APILoggingService;
 
 @ControllerAdvice
 public class RequestBodyInterceptor extends RequestBodyAdviceAdapter {

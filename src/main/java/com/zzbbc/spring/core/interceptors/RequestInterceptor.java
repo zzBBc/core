@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import com.zzbbc.spring.core.logs.APILoggingService;
+import com.zzbbc.spring.core.log.APILoggingService;
 
 @Component
 public class RequestInterceptor implements HandlerInterceptor {

@@ -1,6 +1,5 @@
 package com.zzbbc.spring.core.interceptors;
 
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -11,7 +10,7 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import com.zzbbc.spring.core.logs.APILoggingService;
+import com.zzbbc.spring.core.log.APILoggingService;
 
 @ControllerAdvice
 public class ResponseBodyInterceptor implements ResponseBodyAdvice<Object> {
@@ -36,7 +35,6 @@ public class ResponseBodyInterceptor implements ResponseBodyAdvice<Object> {
         loggingService.displayResponse(((ServletServerHttpRequest) request).getServletRequest(),
                 ((ServletServerHttpResponse) response).getServletResponse(), body);
 
-        MDC.clear();
         return body;
     }
 }
