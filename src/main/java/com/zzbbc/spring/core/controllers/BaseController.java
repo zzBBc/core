@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.zzbbc.spring.core.dto.BaseDto;
+import com.zzbbc.spring.core.dtos.BaseDto;
 import com.zzbbc.spring.core.services.BaseService;
 
 public abstract class BaseController<S extends BaseService<?, ID, ?, DTO>, ID, DTO extends BaseDto<?>> {

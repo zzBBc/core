@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import com.zzbbc.spring.core.dto.BaseDto;
+import com.zzbbc.spring.core.dtos.BaseDto;
 import com.zzbbc.spring.core.models.BaseModel;
 import com.zzbbc.spring.core.repositories.BaseRepository;
 

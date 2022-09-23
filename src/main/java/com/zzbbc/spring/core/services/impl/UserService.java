@@ -2,7 +2,7 @@ package com.zzbbc.spring.core.services.impl;
 
 import java.util.UUID;
 import org.springframework.stereotype.Service;
-import com.zzbbc.spring.core.dto.impl.UserDto;
+import com.zzbbc.spring.core.dtos.impl.UserDto;
 import com.zzbbc.spring.core.models.impl.User;
 import com.zzbbc.spring.core.repositories.impl.UserRepository;
 import com.zzbbc.spring.core.services.BaseService;

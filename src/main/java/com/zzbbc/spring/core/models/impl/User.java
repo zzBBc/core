@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
-import com.zzbbc.spring.core.dto.impl.UserDto;
+import com.zzbbc.spring.core.dtos.impl.UserDto;
 import com.zzbbc.spring.core.models.BaseModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
