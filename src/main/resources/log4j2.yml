@@ -124,6 +124,13 @@ Configuration:
         name: org.springframework.beans.factory.xml.BeanDefinitionParserDelegate
         level: debug
         additivity: false
+      - AppenderRef:
+        - ref: CONSOLE
+        - ref: ERROR
+        - ref: INFO
+        name: com.zaxxer.hikari.pool.HikariPool
+        level: info
+        additivity: false
     Root:
       level: all
       AppenderRef:
