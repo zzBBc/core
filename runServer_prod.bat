@@ -1,1 +1,1 @@
-java -jar -Xmx1024m -Xms128m -DenvTarget=prod core-1.0.jar >> log_%date:~10,4%-%date:~4,2%-%date:~7,2%.log &
+java -jar -Xmx1024m -Xms128m -Dspring.profiles.active=prod core-1.0.jar >> log_%date:~10,4%-%date:~4,2%-%date:~7,2%.log &

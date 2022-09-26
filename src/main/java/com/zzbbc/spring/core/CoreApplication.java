@@ -1,5 +1,6 @@
 package com.zzbbc.spring.core;
 
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +10,9 @@ public class CoreApplication {
 		System.setProperty("Log4jContextSelector",
 				"org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");
 
-		SpringApplication.run(CoreApplication.class, args);
+		SpringApplication application = new SpringApplication(CoreApplication.class);
+		application.setBannerMode(Banner.Mode.OFF);
+		application.run(args);
 	}
 
 }

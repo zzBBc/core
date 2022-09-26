@@ -8,16 +8,26 @@ spring:
     username: sa
     password: 
     driverClassName: org.h2.Driver
+    configuration:
+      maximum-pool-size: 30
+  jackson:
+    default-property-inclusion: NON_NULL
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
+    show-sql: true
   h2:
     console:
       enabled: true
+  mvc:
+    async:
+      request-timeout: 30000
+
 
 # LOGGING
 logging:
+  config: file:config/log4j2.yml
   level:
     web: DEBUG
 
@@ -30,3 +40,15 @@ management:
   trace:
     http:
       include: RESPONSE_HEADERS
+    # server:
+    #   port: 9001
+
+# SQL statements and parameters
+log4j:
+  logger:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: trace

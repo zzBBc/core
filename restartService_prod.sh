@@ -6,4 +6,4 @@ rm -rf 1.sh
 
 sleep 2
 
-nohup java -Xmx1024m -Xms128m -jar -DenvTarget=prod core-1.0.jar > $(date '+%Y%m%d').txt &
+nohup java -Xmx1024m -Xms128m -jar -Dspring.profiles.active=prod core-1.0.jar > $(date '+%Y%m%d').txt &
