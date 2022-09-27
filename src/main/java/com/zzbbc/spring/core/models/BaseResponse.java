@@ -23,6 +23,12 @@ public class BaseResponse {
         this(httpStatus.value(), httpStatus.getReasonPhrase());
     }
 
+    public BaseResponse(Object data) {
+        this(1, "");
+
+        this.data = data;
+    }
+
     public BaseResponse(int code, String message) {
         this();
 

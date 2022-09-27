@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import com.zzbbc.spring.core.dtos.BaseDto;
+import com.zzbbc.spring.core.models.BaseResponse;
 import com.zzbbc.spring.core.services.BaseService;
 
 @RestController
@@ -21,17 +22,19 @@ public abstract class BaseController<S extends BaseService<?, ID, ?, DTO>, ID, D
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
+    public Callable<?> findAll() {
+        return () -> {
         List<DTO> dtos = this.service.findAll();
 
-        return ResponseEntity.ok(dtos);
+            return ResponseEntity.ok(new BaseResponse(dtos));
+        };
     }
 
     @GetMapping("/{id}")
     public Callable<?> findById(@PathVariable(name = "id") String id) {
         return () -> {
         Optional<DTO> dto = this.service.findById(toId(id));
-            return dto;
+            return ResponseEntity.ok(new BaseResponse(dto));
         };
     }
 
