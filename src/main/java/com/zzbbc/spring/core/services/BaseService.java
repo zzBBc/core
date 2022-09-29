@@ -9,13 +9,16 @@ import org.springframework.data.domain.Pageable;
 import com.zzbbc.spring.core.dtos.BaseDto;
 import com.zzbbc.spring.core.models.BaseModel;
 import com.zzbbc.spring.core.repositories.BaseRepository;
+import com.zzbbc.spring.core.validators.ValidatorFactory;
 
 public abstract class BaseService<R extends BaseRepository<M, ID>, ID, M extends BaseModel<DTO>, DTO extends BaseDto<M>> {
     protected final R repository;
+    protected final ValidatorFactory validatorFactory;
 
     @Autowired
-    public BaseService(R repository) {
+    public BaseService(R repository, ValidatorFactory validatorFactory) {
         this.repository = repository;
+        this.validatorFactory = validatorFactory;
     }
 
     public List<DTO> findAll() {
