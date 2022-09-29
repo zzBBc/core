@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jboss.logging.MDC;
 import org.springframework.stereotype.Service;
+import com.zzbbc.spring.core.enums.LogArgEnum;
 import com.zzbbc.spring.core.log.APILoggingService;
 
 @Service
@@ -20,7 +21,7 @@ public class APILoggingServiceImpl implements APILoggingService {
 
     @Override
     public void displayRequest(HttpServletRequest request, Object body) {
-        MDC.put("tx.id", UUID.randomUUID().toString());
+        MDC.put(LogArgEnum.TX_ID.name(), UUID.randomUUID().toString());
 
         StringBuilder reqMessage = new StringBuilder();
         Map<String, String> parameters = getParameters(request);

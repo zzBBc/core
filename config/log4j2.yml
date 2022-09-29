@@ -5,7 +5,7 @@ Configuration:
       name: CONSOLE
       target: SYSTEM_OUT
       PatternLayout:
-        pattern: '%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level - [%t] %c{1} - %m  - [tx.id=%X{tx.id}] %n'
+        pattern: '%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level - [%t] %c{1} - %m  - [tx.id=%X{TX_ID}] %n'
       ThresholdFilter: # filters out error messages
         level: info
         onMatch: accept # hide error level
@@ -15,7 +15,7 @@ Configuration:
         fileName: logs/info.log
         filePattern: logs/$${date:yyyy-MM}/%d{yyyy-MM-dd}-info-%i.log.gz
         PatternLayout:
-          pattern: '%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level - %c - %m  - [tx.id=%X{tx.id}] %n'
+          pattern: '%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level - %c - %m  - [tx.id=%X{TX_ID}] %n'
         Policies:
           TimeBasedTriggeringPolicy: {
           }
@@ -33,7 +33,7 @@ Configuration:
         fileName: logs/debug.log
         filePattern: logs/$${date:yyyy-MM}/%d{yyyy-MM-dd}-debug-%i.log.gz
         PatternLayout:
-          pattern: '%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level - %c - %m  - [tx.id=%X{eventbus.id}] %n'
+          pattern: '%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level - %c - %m  - [tx.id=%X{TX_ID}] %n'
         Policies:
           TimeBasedTriggeringPolicy: {
           }
@@ -51,7 +51,7 @@ Configuration:
         fileName: logs/error.log
         filePattern: logs/$${date:yyyy-MM}/%d{yyyy-MM-dd}-error-%i.log.gz
         PatternLayout:
-          pattern: '%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level - [%t] %c - %M:%L | %m - [tx.id=%X{eventbus.id}] %n'
+          pattern: '%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level - [%t] %c - %M:%L | %m - [tx.id=%X{TX_ID}] %n'
         Policies:
           TimeBasedTriggeringPolicy: {
           }
@@ -69,7 +69,7 @@ Configuration:
         fileName: logs/monitor.log
         filePattern: logs/$${date:yyyy-MM}/%d{yyyy-MM-dd}-monitor-%i.log.gz
         PatternLayout:
-          pattern: '%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level - [%t] %c - %M:%L | %m - [tx.id=%X{eventbus.id}] %n'
+          pattern: '%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level - [%t] %c - %M:%L | %m - [tx.id=%X{TX_ID}] %n'
         Policies:
           TimeBasedTriggeringPolicy: {
           }

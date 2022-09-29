@@ -3,6 +3,7 @@ package com.zzbbc.spring.core.models;
 import java.util.UUID;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
+import com.zzbbc.spring.core.enums.LogArgEnum;
 import lombok.Data;
 
 @Data
@@ -16,7 +17,7 @@ public class BaseResponse {
     private Object data;
 
     private BaseResponse() {
-        this.requestId = UUID.fromString(MDC.get("tx.id"));
+        this.requestId = UUID.fromString(MDC.get(LogArgEnum.TX_ID.name()));
     }
 
     public BaseResponse(HttpStatus httpStatus) {
