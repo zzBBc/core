@@ -1,11 +1,8 @@
 package com.zzbbc.spring.core.models.impl;
 
 import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 import com.zzbbc.spring.core.dtos.impl.UserDto;
 import com.zzbbc.spring.core.models.BaseModel;
@@ -13,19 +10,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Table(name = "binance_user")
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class User extends BaseModel<UserDto> {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(value = "id")
+    // @GeneratedValue(generator = "UUID")
+    // @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @Column(name = "token", nullable = false, unique = true)
+    @Column(value = "token")
     private String token;
 
     @Override

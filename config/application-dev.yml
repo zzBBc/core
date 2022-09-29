@@ -6,10 +6,10 @@ spring:
   application:
     name: base-service
   datasource:
-    url: jdbc:h2:~/cb-rate-db
+    url: r2dbc:h2:mem///cb-rate-db
     username: sa
     password: 
-    driverClassName: org.h2.Driver
+    driverClassName: h2
     configuration:
       maximum-pool-size: 30
   jackson:
