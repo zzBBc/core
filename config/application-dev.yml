@@ -2,7 +2,7 @@ server:
   port: 9000
 spring:
   application:
-    name: rate-service
+    name: base-service
   datasource:
     url: jdbc:h2:~/cb-rate-db
     username: sa
@@ -36,7 +36,14 @@ management:
   endpoints:
     web:
       exposure:
-        include: httptrace
+        include: httptrace, prometheus
+  metrics:
+    export:
+      prometheus:
+        pushgateway:
+          enabled: true
+    tags:
+      application: ${spring.application.name}
   trace:
     http:
       include: RESPONSE_HEADERS
