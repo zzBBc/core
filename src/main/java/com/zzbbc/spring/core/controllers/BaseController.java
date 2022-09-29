@@ -1,16 +1,13 @@
 package com.zzbbc.spring.core.controllers;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.Callable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import com.zzbbc.spring.core.dtos.BaseDto;
-import com.zzbbc.spring.core.models.BaseResponse;
 import com.zzbbc.spring.core.services.BaseService;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 public abstract class BaseController<S extends BaseService<?, ID, ?, DTO>, ID, DTO extends BaseDto<?>> {
@@ -22,20 +19,13 @@ public abstract class BaseController<S extends BaseService<?, ID, ?, DTO>, ID, D
     }
 
     @GetMapping
-    public Callable<?> findAll() {
-        return () -> {
-        List<DTO> dtos = this.service.findAll();
-
-            return ResponseEntity.ok(new BaseResponse(dtos));
-        };
+    public Flux<?> findAll() {
+        return this.service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Callable<?> findById(@PathVariable(name = "id") String id) {
-        return () -> {
-        Optional<DTO> dto = this.service.findById(toId(id));
-            return ResponseEntity.ok(new BaseResponse(dto));
-        };
+    public Mono<?> findById(@PathVariable(name = "id") String id) {
+        return this.service.findById(toId(id));
     }
 
     protected abstract ID toId(String id);
