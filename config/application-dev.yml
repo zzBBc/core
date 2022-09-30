@@ -6,7 +6,7 @@ spring:
   application:
     name: base-service
   datasource:
-    url: r2dbc:h2:mem///cb-rate-db
+    url: r2dbc:h2:///~/cb-rate-db
     username: sa
     password: 
     driverClassName: h2
