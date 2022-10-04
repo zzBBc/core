@@ -10,8 +10,13 @@ import com.zzbbc.spring.core.interceptors.RequestInterceptor;
 @Component
 public class RequestMVCConfig implements WebMvcConfigurer {
 
+    private final RequestInterceptor requestInterceptor;
+
+
     @Autowired
-    private RequestInterceptor requestInterceptor;
+    public RequestMVCConfig(RequestInterceptor requestInterceptor) {
+        this.requestInterceptor = requestInterceptor;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -20,7 +25,7 @@ public class RequestMVCConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
+        registry.addMapping("/**").allowedMethods("*");
     }
 
 
