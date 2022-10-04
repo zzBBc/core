@@ -5,14 +5,11 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
-import com.zzbbc.spring.core.enums.LogArgEnum;
 import com.zzbbc.spring.core.log.APILoggingService;
 
 @Service
@@ -21,8 +18,6 @@ public class APILoggingServiceImpl implements APILoggingService {
 
     @Override
     public void displayRequest(HttpServletRequest request, Object body) {
-        MDC.put(LogArgEnum.TX_ID.name(), UUID.randomUUID().toString());
-
         StringBuilder reqMessage = new StringBuilder();
         Map<String, String> parameters = getParameters(request);
 
@@ -54,7 +49,6 @@ public class APILoggingServiceImpl implements APILoggingService {
         respMessage.append(" responseBody = [").append(body).append("]");
 
         LOGGER.info("logResponse: {}", respMessage);
-        MDC.clear();
     }
 
     private Map<String, String> getHeaders(HttpServletResponse response) {

@@ -1,6 +1,5 @@
 package com.zzbbc.spring.core.models;
 
-import java.util.UUID;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import com.zzbbc.spring.core.enums.LogArgEnum;
@@ -12,12 +11,12 @@ public class BaseResponse {
 
     private String message;
 
-    private UUID requestId;
+    private String requestId;
 
     private Object data;
 
     private BaseResponse() {
-        this.requestId = UUID.fromString(MDC.get(LogArgEnum.TX_ID.name()));
+        this.requestId = MDC.get(LogArgEnum.TX_ID.name());
     }
 
     public BaseResponse(HttpStatus httpStatus) {
