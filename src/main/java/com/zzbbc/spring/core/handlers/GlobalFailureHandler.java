@@ -2,6 +2,7 @@ package com.zzbbc.spring.core.handlers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,13 @@ public class GlobalFailureHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleIllegalArgumentException(Exception ex, WebRequest request) {
         LOGGER.error(ex.getMessage(), ex);
         return toErrorResponse(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    public ResponseEntity<?> handleEmptyResultDataAccessException(Exception ex,
+            WebRequest request) {
+        LOGGER.error(ex.getMessage());
+        return toErrorResponse(HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BusinessException.class)
