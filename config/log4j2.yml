@@ -140,44 +140,14 @@ Configuration:
         # Show sql
       - AppenderRef:
         - ref: SQL
-        name: org.hibernate
+        name: org.hibernate.SQL
+        level: debug
         additivity: false
       - AppenderRef:
         - ref: SQL
-        name: org.hibernate.boot.registry.selector.internal.StrategySelectorImpl
-        level: error
+        name: org.hibernate.type.descriptor.sql.BasicBinder
+        level: trace
         additivity: false
-      - AppenderRef:
-        - ref: SQL
-        name: org.hibernate.cfg
-        level: error
-        additivity: false
-      - AppenderRef:
-        - ref: SQL
-        name: org.hibernate.engine
-        level: error
-        additivity: false
-      - AppenderRef:
-        - ref: SQL
-        name: org.hibernate.hql
-        level: error
-        additivity: false
-      - AppenderRef:
-        - ref: SQL
-        name: org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory
-        level: error
-        additivity: false
-      - AppenderRef:
-        - ref: SQL
-        name: org.hibernate.metamodel.internal
-        level: error
-        additivity: false
-      - AppenderRef:
-        - ref: SQL
-        name: org.hibernate.type.BasicTypeRegistry
-        level: error
-        additivity: false
-        
     Root:
       level: all
       AppenderRef:
