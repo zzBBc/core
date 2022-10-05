@@ -83,6 +83,20 @@ Configuration:
           level: debug
           onMatch: deny
           onMismatch: neutral
+      - name: SQL
+        fileName: logs/sql.log
+        filePattern: logs/$${date:yyyy-MM}/%d{yyyy-MM-dd}-sql-%i.log.gz
+        PatternLayout:
+          pattern: '%d{yyyy/MM/dd HH:mm:ss.SSS} %-5level - [%t] %c - %M:%L | %m - [tx.id=%X{TX_ID}] %n'
+        Policies:
+          TimeBasedTriggeringPolicy: {
+          }
+          OnStartupTriggeringPolicy: {
+          }
+          SizeBasedTriggeringPolicy:
+            size: 10 MB
+        DefaultRollOverStrategy:
+          max: 1000000
   Loggers:
     Logger:
       - AppenderRef:
@@ -98,7 +112,7 @@ Configuration:
         - ref: ERROR
         - ref: INFO
         - ref: DEBUG
-        name: org.springframework.beans.CachedIntrospectionResults
+        name: org.springframework.beans
         level: debug
         additivity: false
       - AppenderRef:
@@ -120,17 +134,50 @@ Configuration:
         - ref: CONSOLE
         - ref: ERROR
         - ref: INFO
-        - ref: DEBUG
-        name: org.springframework.beans.factory.xml.BeanDefinitionParserDelegate
-        level: debug
-        additivity: false
-      - AppenderRef:
-        - ref: CONSOLE
-        - ref: ERROR
-        - ref: INFO
         name: com.zaxxer.hikari.pool.HikariPool
         level: info
         additivity: false
+        # Show sql
+      - AppenderRef:
+        - ref: SQL
+        name: org.hibernate
+        additivity: false
+      - AppenderRef:
+        - ref: SQL
+        name: org.hibernate.boot.registry.selector.internal.StrategySelectorImpl
+        level: error
+        additivity: false
+      - AppenderRef:
+        - ref: SQL
+        name: org.hibernate.cfg
+        level: error
+        additivity: false
+      - AppenderRef:
+        - ref: SQL
+        name: org.hibernate.engine
+        level: error
+        additivity: false
+      - AppenderRef:
+        - ref: SQL
+        name: org.hibernate.hql
+        level: error
+        additivity: false
+      - AppenderRef:
+        - ref: SQL
+        name: org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory
+        level: error
+        additivity: false
+      - AppenderRef:
+        - ref: SQL
+        name: org.hibernate.metamodel.internal
+        level: error
+        additivity: false
+      - AppenderRef:
+        - ref: SQL
+        name: org.hibernate.type.BasicTypeRegistry
+        level: error
+        additivity: false
+        
     Root:
       level: all
       AppenderRef:
