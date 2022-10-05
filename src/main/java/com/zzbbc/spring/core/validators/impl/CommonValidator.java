@@ -37,7 +37,7 @@ public class CommonValidator extends BaseValidator {
 
     private static SearchCriteria validateFilterPattern(Map.Entry<String, String> entry) {
         final Pattern pattern =
-                Pattern.compile("(:|<|>|<=|>=|%|-|\\(\\))([\\w\\s\\(\\),.:-]+?)\\|");
+                Pattern.compile("(<|>|<=|>=|%|-|\\(\\))([\\w\\s\\(\\),.:-]+?)\\|");
         Matcher m = pattern.matcher(entry.getValue() + "|");
         if (m.find()) {
             return new SearchCriteria(entry.getKey(), m.group(1), m.group(2));

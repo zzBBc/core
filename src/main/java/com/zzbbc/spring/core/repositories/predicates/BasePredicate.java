@@ -11,6 +11,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.springframework.http.HttpStatus;
+import com.zzbbc.spring.core.enums.FilterOperator;
 import com.zzbbc.spring.core.exceptions.BusinessException;
 import com.zzbbc.spring.core.models.BaseModel;
 import com.zzbbc.spring.core.models.BaseResponse;
@@ -32,7 +33,7 @@ public class BasePredicate<M extends BaseModel<?>> {
     private Predicate getPredicate(SearchCriteria searchCriteria) {
         String key = searchCriteria.getKey();
         String value = searchCriteria.getValue();
-        String operator = searchCriteria.getOperator();
+        FilterOperator operator = searchCriteria.getOperator();
 
         boolean isMultiValue = value.contains(",");
 
@@ -61,51 +62,52 @@ public class BasePredicate<M extends BaseModel<?>> {
         }
     }
 
-    private Predicate getLocalDateTimePredicate(String key, String operator, String valueString) {
+    private Predicate getLocalDateTimePredicate(String key, FilterOperator operator,
+            String valueString) {
         Path<LocalDateTime> path = root.get(key);
 
         LocalDateTime value = CommonValidator.validateNull(DateUtils.toLocalDateTime(valueString),
                 key + " không hợp lệ!");
 
         switch (operator) {
-            case "=":
+            case EQUALS:
                 return criteriaBuilder.equal(path, value);
-            case ">=":
+            case GREATER_EQUAL:
                 return criteriaBuilder.greaterThanOrEqualTo(path, value);
-            case "<=":
+            case LESS_EQUAL:
                 return criteriaBuilder.lessThanOrEqualTo(path, value);
             default:
                 return null;
         }
     }
 
-    private Predicate getDatePredicate(String key, String operator, String valueString) {
+    private Predicate getDatePredicate(String key, FilterOperator operator, String valueString) {
         Path<Date> path = root.get(key);
 
         Date value =
                 CommonValidator.validateNull(DateUtils.toDate(valueString), key + " không hợp lệ!");
         switch (operator) {
-            case "=":
+            case EQUALS:
                 return criteriaBuilder.equal(path, value);
-            case ">=":
+            case GREATER_EQUAL:
                 return criteriaBuilder.greaterThanOrEqualTo(path, value);
-            case "<=":
+            case LESS_EQUAL:
                 return criteriaBuilder.lessThanOrEqualTo(path, value);
             default:
                 return null;
         }
     }
 
-    private Predicate getStringPredicate(String key, String operator, String valueString,
+    private Predicate getStringPredicate(String key, FilterOperator operator, String valueString,
             boolean isMultiValue) {
         Path<String> path = root.get(key);
 
         if (isMultiValue) {
             String[] value = valueString.split(",");
             switch (operator) {
-                case "=":
+                case EQUALS:
                     return criteriaBuilder.equal(path, value);
-                case "!=":
+                case NOT_EQUALS:
                     return criteriaBuilder.notEqual(path, value);
                 default:
                     return null;
@@ -113,9 +115,9 @@ public class BasePredicate<M extends BaseModel<?>> {
         } else {
             String value = CommonValidator.validateNull(valueString, key + " không hợp lệ!");
             switch (operator) {
-                case "=":
+                case EQUALS:
                     return criteriaBuilder.equal(path, value);
-                case "!=":
+                case NOT_EQUALS:
                     return criteriaBuilder.notEqual(path, value);
                 default:
                     return null;
@@ -123,16 +125,16 @@ public class BasePredicate<M extends BaseModel<?>> {
         }
     }
 
-    private Predicate getDoublePredicate(String key, String operator, String numberString,
+    private Predicate getDoublePredicate(String key, FilterOperator operator, String numberString,
             boolean isMultiValue) {
         Path<Double> path = root.get(key);
 
         if (isMultiValue) {
             Object[] value = Stream.of(numberString.split(",")).toArray();
             switch (operator) {
-                case ":":
+                case EQUALS:
                     return criteriaBuilder.in(path).in(value);
-                case "!=":
+                case NOT_EQUALS:
                     return criteriaBuilder.in(path).not().in(value);
                 default:
                     return null;
@@ -141,17 +143,17 @@ public class BasePredicate<M extends BaseModel<?>> {
             Double value = CommonValidator.validateNull(Double.parseDouble(numberString),
                     key + " không hợp lệ!");
             switch (operator) {
-                case "=":
+                case EQUALS:
                     return criteriaBuilder.equal(path, value);
-                case ">":
+                case GREATER:
                     return criteriaBuilder.greaterThan(path, value);
-                case "<":
+                case LESS:
                     return criteriaBuilder.lessThan(path, value);
-                case ">=":
+                case GREATER_EQUAL:
                     return criteriaBuilder.greaterThanOrEqualTo(path, value);
-                case "<=":
+                case LESS_EQUAL:
                     return criteriaBuilder.lessThanOrEqualTo(path, value);
-                case "!=":
+                case NOT_EQUALS:
                     return criteriaBuilder.notEqual(path, value);
                 default:
                     return null;
@@ -159,16 +161,16 @@ public class BasePredicate<M extends BaseModel<?>> {
         }
     }
 
-    private Predicate getIntegerPredicate(String key, String operator, String numberString,
+    private Predicate getIntegerPredicate(String key, FilterOperator operator, String numberString,
             boolean isMultiValue) {
         Path<Integer> path = root.get(key);
 
         if (isMultiValue) {
             Object[] value = Stream.of(numberString.split(",")).toArray();
             switch (operator) {
-                case "=":
+                case EQUALS:
                     return criteriaBuilder.in(path).in(value);
-                case "!=":
+                case NOT_EQUALS:
                     return criteriaBuilder.in(path).not().in(value);
                 default:
                     return null;
@@ -177,17 +179,17 @@ public class BasePredicate<M extends BaseModel<?>> {
             Integer value = CommonValidator.validateNull(Integer.parseInt(numberString),
                     key + " không hợp lệ!");
             switch (operator) {
-                case "=":
+                case EQUALS:
                     return criteriaBuilder.equal(path, value);
-                case ">":
+                case GREATER:
                     return criteriaBuilder.greaterThan(path, value);
-                case "<":
+                case LESS:
                     return criteriaBuilder.lessThan(path, value);
-                case ">=":
+                case GREATER_EQUAL:
                     return criteriaBuilder.greaterThanOrEqualTo(path, value);
-                case "<=":
+                case LESS_EQUAL:
                     return criteriaBuilder.lessThanOrEqualTo(path, value);
-                case "!=":
+                case NOT_EQUALS:
                     return criteriaBuilder.notEqual(path, value);
                 default:
                     return null;
@@ -195,16 +197,16 @@ public class BasePredicate<M extends BaseModel<?>> {
         }
     }
 
-    private Predicate getLongPredicate(String key, String operator, String numberString,
+    private Predicate getLongPredicate(String key, FilterOperator operator, String numberString,
             boolean isMultiValue) {
         Path<Long> path = root.get(key);
 
         if (isMultiValue) {
             Object[] value = Stream.of(numberString.split(",")).toArray();
             switch (operator) {
-                case "=":
+                case EQUALS:
                     return criteriaBuilder.in(path).in(value);
-                case "!=":
+                case NOT_EQUALS:
                     return criteriaBuilder.in(path).not().in(value);
                 default:
                     return null;
@@ -213,17 +215,17 @@ public class BasePredicate<M extends BaseModel<?>> {
             Long value = CommonValidator.validateNull(Long.parseLong(numberString),
                     key + " không hợp lệ!");
             switch (operator) {
-                case "=":
+                case EQUALS:
                     return criteriaBuilder.equal(path, value);
-                case ">":
+                case GREATER:
                     return criteriaBuilder.greaterThan(path, value);
-                case "<":
+                case LESS:
                     return criteriaBuilder.lessThan(path, value);
-                case ">=":
+                case GREATER_EQUAL:
                     return criteriaBuilder.greaterThanOrEqualTo(path, value);
-                case "<=":
+                case LESS_EQUAL:
                     return criteriaBuilder.lessThanOrEqualTo(path, value);
-                case "!=":
+                case NOT_EQUALS:
                     return criteriaBuilder.notEqual(path, value);
                 default:
                     return null;

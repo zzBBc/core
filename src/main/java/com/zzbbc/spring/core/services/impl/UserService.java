@@ -31,4 +31,8 @@ public class UserService extends BaseService<UserRepositoryImpl, UUID, User, Use
 
         return new UserDetailsImpl(user);
     }
+
+    public UserDto findByUsername(String username) {
+        return repository.findByUsername(username).toDto();
+    }
 }
