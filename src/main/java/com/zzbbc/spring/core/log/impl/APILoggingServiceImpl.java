@@ -1,8 +1,10 @@
 package com.zzbbc.spring.core.log.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
@@ -18,37 +20,62 @@ public class APILoggingServiceImpl implements APILoggingService {
 
     @Override
     public void displayRequest(HttpServletRequest request, Object body) {
-        StringBuilder reqMessage = new StringBuilder();
+        List<Object> args = new ArrayList<>();
+
+        StringBuilder message = new StringBuilder("logRequest: REQUEST method = [{}] path = [{}]");
+        args.add(request.getMethod());
+        args.add(request.getRequestURI());
+
         Map<String, String> parameters = getParameters(request);
-
-        reqMessage.append("REQUEST ");
-        reqMessage.append("method = [").append(request.getMethod()).append("]");
-        reqMessage.append(" path = [").append(request.getRequestURI()).append("] ");
-
         if (!parameters.isEmpty()) {
-            reqMessage.append(" parameters = [").append(parameters).append("] ");
+            message.append(" parameters = [{}]");
+            args.add(parameters);
+        }
+
+        Map<String, String> headers = getHeaders(request);
+        if (!headers.isEmpty()) {
+            message.append(" RequestHeaders = [{}]");
+            args.add(headers);
         }
 
         if (!Objects.isNull(body)) {
-            reqMessage.append(" body = [").append(body).append("]");
+            message.append(" body = [{}]");
+            args.add(body);
         }
 
-        LOGGER.info("log Request: {}", reqMessage);
+        LOGGER.info(message.toString(), args.toArray());
     }
 
     @Override
     public void displayResponse(HttpServletRequest request, HttpServletResponse response,
             Object body) {
-        StringBuilder respMessage = new StringBuilder();
-        Map<String, String> headers = getHeaders(response);
-        respMessage.append("RESPONSE ");
-        respMessage.append(" method = [").append(request.getMethod()).append("]");
-        if (!headers.isEmpty()) {
-            respMessage.append(" ResponseHeaders = [").append(headers).append("]");
-        }
-        respMessage.append(" responseBody = [").append(body).append("]");
+        List<Object> args = new ArrayList<>();
 
-        LOGGER.info("logResponse: {}", respMessage);
+        StringBuilder message = new StringBuilder("logResponse: RESPONSE method = [{}]");
+        args.add(request.getMethod());
+
+        Map<String, String> headers = getHeaders(response);
+        if (!headers.isEmpty()) {
+            message.append(" ResponseHeaders = [{}]");
+            args.add(headers);
+        }
+
+        message.append(" responseBody = [{}]");
+        args.add(body);
+
+        LOGGER.info(message.toString(), args.toArray());
+    }
+
+    private Map<String, String> getHeaders(HttpServletRequest request) {
+        Map<String, String> headers = new HashMap<>();
+        Enumeration<String> headerMap = request.getHeaderNames();
+
+        while (headerMap.hasMoreElements()) {
+            String key = headerMap.nextElement();
+            headers.put(key, request.getHeader(key));
+        }
+
+        return headers;
     }
 
     private Map<String, String> getHeaders(HttpServletResponse response) {
@@ -70,6 +97,4 @@ public class APILoggingServiceImpl implements APILoggingService {
         }
         return parameters;
     }
-
-
 }
