@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,10 +33,10 @@ public abstract class BaseController<S extends BaseService<?, ID, ?, DTO>, ID, D
 
             if (Objects.nonNull(pageable)) {
                 BasePage<DTO> dtos = this.service.findAll(params, pageable);
-                return ResponseEntity.ok(new BaseResponse(dtos));
+                return BaseResponse.success(dtos);
             } else {
                 List<DTO> dtos = this.service.findAll(params);
-                return ResponseEntity.ok(new BaseResponse(dtos));
+                return BaseResponse.success(dtos);
             }
         });
     }
@@ -46,7 +45,7 @@ public abstract class BaseController<S extends BaseService<?, ID, ?, DTO>, ID, D
     public MdcCallable<?> findById(@PathVariable(name = "id") String id) {
         return new MdcCallable<>(() -> {
         Optional<DTO> dto = this.service.findById(toId(id));
-            return ResponseEntity.ok(new BaseResponse(dto));
+            return BaseResponse.success(dto);
         });
     }
 

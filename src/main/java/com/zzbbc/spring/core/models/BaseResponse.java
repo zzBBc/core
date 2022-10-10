@@ -2,6 +2,7 @@ package com.zzbbc.spring.core.models;
 
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import com.zzbbc.spring.core.enums.LogArgEnum;
 import lombok.Data;
 
@@ -34,5 +35,9 @@ public class BaseResponse {
 
         this.code = code;
         this.message = message;
+    }
+
+    public static ResponseEntity<BaseResponse> success(Object data) {
+        return ResponseEntity.ok(new BaseResponse(data));
     }
 }
