@@ -4,6 +4,8 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,26 +23,24 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenProvider {
+    private static final Logger LOGGER = LogManager.getLogger(JwtTokenProvider.class);
+
+    private final SecretKey SECRET_KEY;
+    private final JwtParser JWT_PARSER;
+
+    private long JWT_EXPIRATION;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    private static final Logger LOGGER = LogManager.getLogger(JwtTokenProvider.class);
-
-    // Đoạn JWT_SECRET này là bí mật, chỉ có phía server biết
-    private final String JWT_SECRET =
-            "mmwqeqwmekwqmekmwqkewmqkemwqkewmqkewqmekwqmekqwmekwq22wewwwwwwwwwwwwwwwq2312m21kmmmmmmm32112312312321312";
-
-    // Thời gian có hiệu lực của chuỗi jwt
-    private final long JWT_EXPIRATION = 604800000L;
-
-    private final SecretKey SECRET_KEY;
-    private final JwtParser JWT_PARSER;
-
-    public JwtTokenProvider() {
-        this.SECRET_KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(JWT_SECRET));
+    public JwtTokenProvider(@Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration}") String expiration) {
+        this.SECRET_KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
         this.JWT_PARSER = Jwts.parserBuilder().setSigningKey(SECRET_KEY).build();
+
+        this.JWT_EXPIRATION = Long.parseLong(expiration);
     }
 
     // Tạo ra jwt từ thông tin user
