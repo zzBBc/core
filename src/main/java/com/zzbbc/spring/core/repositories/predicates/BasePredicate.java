@@ -10,15 +10,20 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import com.zzbbc.spring.core.enums.FilterOperator;
+import com.zzbbc.spring.core.enums.PropertyEnum;
 import com.zzbbc.spring.core.exceptions.BusinessException;
-import com.zzbbc.spring.core.models.BaseModel;
 import com.zzbbc.spring.core.models.BaseResponse;
+import com.zzbbc.spring.core.models.Model;
 import com.zzbbc.spring.core.utils.DateUtils;
 import com.zzbbc.spring.core.validators.impl.CommonValidator;
 
-public class BasePredicate<M extends BaseModel<?>> {
+public class BasePredicate<M extends Model<?>> {
+    private static final Logger LOGGER = LogManager.getLogger(BasePredicate.class);
+
     private final Class<M> modelClass;
     private final Root<M> root;
     private final CriteriaBuilder criteriaBuilder;
@@ -58,7 +63,44 @@ public class BasePredicate<M extends BaseModel<?>> {
             case "LocalDateTime":
                 return getLocalDateTimePredicate(key, operator, value);
             default:
-                throw new BusinessException(new BaseResponse(HttpStatus.BAD_REQUEST));
+                if (propertyType.isEnum()) {
+                    return getEnumPredicate(key, operator, value, propertyType);
+                } else {
+                    LOGGER.error("Property type not found key=[{}] type=[{}]", key, propertyType);
+                    throw new BusinessException(new BaseResponse(HttpStatus.BAD_REQUEST));
+                }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends PropertyEnum<?>> Predicate getEnumPredicate(String key,
+            FilterOperator operator, String value, Class<?> propertyType) {
+        try {
+            T[] objects = (T[]) propertyType.getEnumConstants();
+
+            for (T enumValue : objects) {
+                if (enumValue.name().equals(value)) {
+                    return getEnumPredicate(key, operator, enumValue);
+                }
+            }
+        } catch (SecurityException | IllegalArgumentException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return null;
+    }
+
+    private <T extends PropertyEnum<?>> Predicate getEnumPredicate(String key,
+            FilterOperator operator, T enumValue) {
+        Path<T> path = root.get(key);
+
+        switch (operator) {
+            case EQUALS:
+                return criteriaBuilder.equal(path, enumValue);
+            case NOT_EQUALS:
+                return criteriaBuilder.notEqual(path, enumValue);
+            default:
+                return null;
         }
     }
 
