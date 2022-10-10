@@ -10,8 +10,8 @@ public class ValidatorFactory {
     private final UserValidator userValidator;
 
     @Autowired
-    public ValidatorFactory() {
-        this.userValidator = new UserValidator();
+    public ValidatorFactory(UserValidator userValidator) {
+        this.userValidator = userValidator;
     }
 
     public UserValidator getUserValidator() {
