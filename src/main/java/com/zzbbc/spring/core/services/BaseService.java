@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import com.zzbbc.spring.core.dtos.BaseDto;
-import com.zzbbc.spring.core.models.BaseModel;
 import com.zzbbc.spring.core.models.BasePage;
+import com.zzbbc.spring.core.models.Model;
 import com.zzbbc.spring.core.repositories.impl.BaseRepositoryImpl;
 import com.zzbbc.spring.core.validators.ValidatorFactory;
 
-public abstract class BaseService<R extends BaseRepositoryImpl<ID, M>, ID, M extends BaseModel<DTO>, DTO extends BaseDto<M>> {
+public abstract class BaseService<R extends BaseRepositoryImpl<ID, M>, ID, M extends Model<DTO>, DTO extends BaseDto<M>> {
     protected final R repository;
     protected final ValidatorFactory validatorFactory;
 

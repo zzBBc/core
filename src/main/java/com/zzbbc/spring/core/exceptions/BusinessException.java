@@ -14,4 +14,8 @@ public class BusinessException extends RuntimeException {
 
         this.baseResponse = baseResponse;
     }
+
+    public BusinessException(int code, String message) {
+        this(new BaseResponse(code, message));
+    }
 }

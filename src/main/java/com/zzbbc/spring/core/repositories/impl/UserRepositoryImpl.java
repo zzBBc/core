@@ -9,7 +9,7 @@ import com.zzbbc.spring.core.repositories.predicates.SearchCriteria;
 
 public class UserRepositoryImpl extends BaseRepositoryImpl<UUID, User> implements UserRepository {
 
-    public UserRepositoryImpl(EntityManager entityManager) {
+    protected UserRepositoryImpl(EntityManager entityManager) {
         super(User.class, entityManager);
     }
 

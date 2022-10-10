@@ -12,17 +12,15 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.QueryUtils;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.data.repository.NoRepositoryBean;
-import com.zzbbc.spring.core.models.BaseModel;
 import com.zzbbc.spring.core.models.BasePage;
+import com.zzbbc.spring.core.models.Model;
 import com.zzbbc.spring.core.repositories.BaseRepository;
 import com.zzbbc.spring.core.repositories.predicates.BasePredicate;
 import com.zzbbc.spring.core.repositories.predicates.SearchCriteria;
 import com.zzbbc.spring.core.validators.impl.CommonValidator;
 
-@NoRepositoryBean
-public abstract class BaseRepositoryImpl<ID, M extends BaseModel<?>>
-        extends SimpleJpaRepository<M, ID> implements BaseRepository<M, ID> {
+public abstract class BaseRepositoryImpl<ID, M extends Model<?>> extends SimpleJpaRepository<M, ID>
+        implements BaseRepository<ID, M> {
     protected final EntityManager entityManager;
     protected final Class<M> domainClass;
 
@@ -33,18 +31,21 @@ public abstract class BaseRepositoryImpl<ID, M extends BaseModel<?>>
         this.entityManager = entityManager;
     }
 
+    @Override
     public List<M> findAll(Map<String, String> params) {
         List<SearchCriteria> filters = CommonValidator.validateSearchCriteria(params);
 
         return predicate(filters);
     }
 
+    @Override
     public BasePage<M> findAll(Map<String, String> params, Pageable pageable) {
         List<SearchCriteria> filters = CommonValidator.validateSearchCriteria(params);
 
         return predicate(filters, pageable);
     }
 
+    @Override
     public M findOne(SearchCriteria searchCriteria) {
         CriteriaQuery<M> criteriaQuery = createCriteriaQuery(new ArrayList<SearchCriteria>() {
             {
@@ -52,7 +53,12 @@ public abstract class BaseRepositoryImpl<ID, M extends BaseModel<?>>
             }
         });
 
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
+        List<M> models = entityManager.createQuery(criteriaQuery).getResultList();
+        if (models.isEmpty()) {
+            return null;
+        }
+
+        return models.get(0);
     }
 
     private BasePage<M> predicate(List<SearchCriteria> filters, Pageable pageable) {
@@ -68,7 +74,7 @@ public abstract class BaseRepositoryImpl<ID, M extends BaseModel<?>>
         return new BasePage<>(models, pageable, totalElements);
     }
 
-    public List<M> predicate(List<SearchCriteria> filters) {
+    private List<M> predicate(List<SearchCriteria> filters) {
         CriteriaQuery<M> criteriaQuery = createCriteriaQuery(filters);
 
         return entityManager.createQuery(criteriaQuery).getResultList();
