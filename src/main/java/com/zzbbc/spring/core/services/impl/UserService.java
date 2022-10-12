@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -93,5 +94,11 @@ public class UserService extends BaseService<UserRepositoryImpl, UUID, User, Use
         }
 
         throw new UsernameNotFoundException(username);
+    }
+
+    @Override
+    public UserDetailsImpl getCurrentUser() {
+        return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
     }
 }
